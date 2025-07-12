@@ -251,6 +251,7 @@ const handleLogout = async () => {
 
 
  function NoteCard({ note, onUpdate, onDelete }) {
+  
   const [edit, setEdit] = useState(false);
   const [form, setForm] = useState({ title: note.title, content: note.content });
   const [summary, setSummary] = useState('');
