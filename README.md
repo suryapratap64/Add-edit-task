@@ -1,22 +1,34 @@
-<<<<<<< HEAD
-# Add-edit-task
-=======
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Clone the repository
+git clone https://github.com/suryapratap64/Add-edit-task.git
 
-## Getting Started
+# Navigate into the project directory
+cd Add-edit-task
 
-First, run the development server:
+# Install dependencies
+npm install
 
-```bash
+# Start the development server
 npm run dev
 
-```
-##first you register in web
-username,
-email,
-password
+# Features
+User registration (username, email, password)
 
-second step 
-login the user using email and password
+User login (email & password)
 
+Add, edit, delete tasks
 
+Summarize notes using OpenAI API
+
+Clean, dark-themed user interface
+
+# Built With
+Next.js – React framework
+
+MongoDB – Database
+
+OpenAI API – AI summarization
+
+Tailwind CSS – Styling
+
+📦 Deployment
+Easily deploy on Vercel or your preferred hosting platform.
