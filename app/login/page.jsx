@@ -77,10 +77,10 @@ export default function LoginPage() {
 
         
 
-          <p className="text-gray-400 text-sm mt-6 text-center">
+          {/* <p className="text-gray-400 text-sm mt-6 text-center">
             New to our site?{' '}
             <a href="/register" className="text-white hover:underline">sign up now</a>.
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
