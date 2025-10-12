@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import ThemeToggle from "../components/ThemeToggle";
@@ -8,15 +8,48 @@ import ThemeToggle from "../components/ThemeToggle";
 export default function DashboardPage() {
   const router = useRouter();
   const [tab, setTab] = useState("notes");
+  const [showNav, setShowNav] = useState(true);
   const [notes, setNotes] = useState([]);
   const [tasks, setTasks] = useState([]);
 
   const [newNote, setNewNote] = useState({ title: "", content: "" });
   const [newTask, setNewTask] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchNotes();
     fetchTasks();
+  }, []);
+
+  // Show navbar when scrolling down, hide when scrolling up
+  useEffect(() => {
+    let lastY = typeof window !== "undefined" ? window.scrollY || 0 : 0;
+    let ticking = false;
+
+    const onScroll = () => {
+      const currentY = window.scrollY || 0;
+      if (Math.abs(currentY - lastY) < 10) {
+        // ignore small changes
+        return;
+      }
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (currentY > lastY) {
+            // scrolling down -> hide nav
+            setShowNav(false);
+          } else {
+            // scrolling up -> show nav
+            setShowNav(true);
+          }
+          lastY = currentY;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const fetchNotes = async () => {
@@ -27,6 +60,15 @@ export default function DashboardPage() {
       toast.error("Failed to load notes");
     }
   };
+  // ✅ Using .startsWith() ensures it matches letters from the start of the string.
+  // const filteredNotes=notes.filter(note=>note.title.toLowerCase().startsWith(searchTerm.toLowerCase())||note.content.toLowerCase.startsWith(searchTerm.toLowerCase()));
+  const filteredNotes = notes.filter((note) => {
+    const title = note.title ? note.title.toLowerCase() : "";
+    const content = note.content ? note.content.toLowerCase() : "";
+    const search = searchTerm.toLowerCase();
+
+    return title.includes(search) || content.includes(search);
+  });
 
   const fetchTasks = async () => {
     const res = await fetch("/api/tasks");
@@ -146,8 +188,12 @@ export default function DashboardPage() {
       className="min-h-screen flex flex-col"
       style={{ background: "var(--bg)", color: "var(--fg)" }}
     >
-      {/* Navbar */}
-      <nav className="w-full bg-gray-900/70 backdrop-blur-sm border-b border-gray-800">
+      {/* Navbar (fixed) */}
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transform transition-transform duration-300 ${
+          showNav ? "translate-y-0" : "-translate-y-full"
+        } bg-gray-900/70 backdrop-blur-sm border-b border-gray-800`}
+      >
         <div className="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <h1 className="text-xl font-bold">🛠 My Workspace</h1>
@@ -155,6 +201,14 @@ export default function DashboardPage() {
               Notes & Tasks
             </p>
           </div>
+          <input
+            type="text"
+            placeholder="serach notes ...."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="px-3 py-1 rounded-md border-1 text-sm text-white outline-none"
+          />
+
           <div className="flex items-center gap-2">
             <button
               onClick={() => setTab("notes")}
@@ -189,7 +243,7 @@ export default function DashboardPage() {
         </div>
       </nav>
 
-      <main className="flex-1 w-full">
+      <main className="flex-1 w-full pt-24">
         <div className="max-w-5xl mx-auto p-4 sm:p-6">
           <div className="card rounded-lg p-4 sm:p-6 shadow">
             {tab === "notes" && (
@@ -231,15 +285,27 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Notes list */}
-                <div className="grid grid-cols-1 gap-4">
-                  {notes.map((note) => (
+                <div className="grid  grid-cols-1 gap-4">
+                  {/* {notes.map((note) => (
                     <NoteCard
                       key={note._id}
                       note={note}
                       onUpdate={updateNote}
                       onDelete={deleteNote}
                     />
-                  ))}
+                  ))} */}
+                  {filteredNotes.length > 0 ? (
+                    filteredNotes.map((note) => (
+                      <NoteCard
+                        key={note._id}
+                        note={note}
+                        onUpdate={updateNote}
+                        onDelete={deleteNote}
+                      />
+                    ))
+                  ) : (
+                    <p>No notes found</p>
+                  )}
                 </div>
               </section>
             )}
@@ -321,7 +387,7 @@ function NoteCard({ note, onUpdate, onDelete }) {
   };
 
   return (
-    <div className="card p-4 rounded shadow transition-all duration-300 overflow-hidden w-full">
+    <div className="card p-4 shadow-gray-500 shadow-md rounded  transition-all duration-300 overflow-hidden w-full">
       {edit ? (
         <div className="space-y-2">
           <input
