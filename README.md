@@ -21,7 +21,7 @@ Summarize notes using OpenAI API
 
 Clean, dark-themed user interface
 
-# Built With
+# Built With~
 Next.js – React framework
 
 MongoDB – Database

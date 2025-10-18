@@ -19,17 +19,25 @@ export async function POST(request) {
       );
     }
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return Response.json(
-        { message: "Invalid email or password" },
-        { status: 401 }
-      );
-    }
+    // const match = await password.compare(password, user.password);
+    // if (!match) {
+    //   return Response.json(
+    //     { message: "Invalid email or password" },
+    //     { status: 401 }
+    //   );
+    // }
 
     // create JWT
+        // Plain-text password comparison
+    if (password !== user.password) {
+      return new Response(JSON.stringify({ message: "Invalid email or password" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, {
-      expiresIn: "7d",
+      expiresIn: "1d",
     });
 
     // set cookie (SameSite=Lax so it works for same-site requests)
