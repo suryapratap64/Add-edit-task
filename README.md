@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Clone the repository
+git clone https://github.com/suryapratap64/Add-edit-task.git
 
-## Getting Started
+# Navigate into the project directory
+cd Add-edit-task
 
-First, run the development server:
+# Install dependencies
+npm install
 
-```bash
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Features
+User registration (username, email, password)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+User login (email & password)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Add, edit, delete tasks
 
-## Learn More
+Summarize notes using OpenAI API
 
-To learn more about Next.js, take a look at the following resources:
+Clean, dark-themed user interface
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Built With
+Next.js – React framework
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+MongoDB – Database
 
-## Deploy on Vercel
+OpenAI API – AI summarization
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Tailwind CSS – Styling
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+📦 Deployment
+Easily deploy on Vercel or your preferred hosting platform.
